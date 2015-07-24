@@ -1,4 +1,5 @@
 var fs = require('fs');
+var ejs = require('ejs');
 
 var csvFile = fs.readFileSync('friend_list.csv', 'utf8');
 
@@ -39,10 +40,8 @@ var friends = csvParse(csvFile);
 var emailTemplate = fs.readFileSync('email_template.html', 'utf8');
 
 friends.forEach(function(element){
-	var firstName = element['firstName'];
-	var months = element['numMonthsSinceContact'];
-	var filledEmail = emailTemplate.replace(/FIRST_NAME/gi, firstName).replace(/NUM_MONTHS_SINCE_CONTACT/gi, months)
-		 .replace(/LINK_TO_BLOG/gi, 'jbarabander.tumblr.com/');
-	console.log(filledEmail);
+	var filledTemplate = ejs.render(emailTemplate, element);
+	console.log(filledTemplate);
 })
+
 
